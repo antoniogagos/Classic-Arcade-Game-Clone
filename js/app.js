@@ -1,3 +1,4 @@
+'use strict';
 // Enemies our player must avoid
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
@@ -5,6 +6,7 @@ var Enemy = function(x, y) {
     this.x = x;
     this.y = y;
     this.xspeed = randomRangeNumber(150, 300);
+
     this.width = 40;
     this.height = 20;
     // The image/sprite for our enemies, this uses
@@ -54,6 +56,7 @@ var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.x = 200;
     this.y = 380;
+
     this.width = 15;
     this.height = 30;
 };
@@ -61,17 +64,13 @@ var Player = function() {
 // Reset player position if he reaches water blocks
 Player.prototype.reset = function() {
     if (this.y === -45) {
-        initialPlayerPosition();
+      this.x = 200;
+      this.y = 380;
     }
 };
 
-function initialPlayerPosition() {
-  player.x = 200;
-  player.y = 380;
-};
-
 Player.prototype.update = function() {
-    player.reset();
+    this.reset();
 };
 
 Player.prototype.move = function(dirX, dirY) {
@@ -102,7 +101,7 @@ Player.prototype.handleInput = function(keyPressed) {
 Enemy.prototype.checkCollision = function() { 
     if ((player.x + player.width) >= (this.x) && (player.x) <= (this.x + this.width) &&
         (player.y + player.height) >= (this.y) && (player.y) <= (this.y + this.height)) {
-        initialPlayerPosition();
+        player.reset();
     }
 };
 

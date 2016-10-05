@@ -1,14 +1,17 @@
-'use strict';
-// Enemies our player must avoid
+"use strict";
+
+var TILE_WIDTH = 101,
+    TILE_HEIGHT = 83;
+
 var Enemy = function(x, y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
     this.x = x;
     this.y = y;
-    this.xspeed = randomRangeNumber(150, 300);
+    this.xspeed = this.randomRangeNumber(150, 300);
 
-    this.width = 40;
-    this.height = 20;
+    this.width = 60;
+    this.height = 40;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -26,13 +29,14 @@ Enemy.prototype.update = function(dt) {
 
     this.x = this.x + this.xspeed * dt;
 
-    if (this.offScreen()) {
+    if ( this.offScreen() ) {
         var index = allEnemies.indexOf(this);
-        allEnemies.splice(index, 1)
+        allEnemies.splice(index, 1);
     }
+
 };
 
-function randomRangeNumber(min, max) {
+Enemy.prototype.randomRangeNumber = function(min, max) {
     return Math.random() * (max - min) + min;
 };
 
@@ -49,6 +53,15 @@ Enemy.prototype.render = function() {
 
 };
 
+// Bounding Box Collision Detection src: https://www.youtube.com/watch?v=8b_reDI7iPM
+Enemy.prototype.checkCollision = function() { 
+    if ((player.x + player.width) >= (this.x) && (player.x) <= (this.x + this.width) &&
+        (player.y + player.height) >= (this.y) && (player.y) <= (this.y + this.height)) {
+        player.x = 200;
+        player.y = 380;
+    }
+};
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -57,13 +70,13 @@ var Player = function() {
     this.x = 200;
     this.y = 380;
 
-    this.width = 15;
-    this.height = 30;
+    this.width = 40;
+    this.height = 80;
 };
 
 // Reset player position if he reaches water blocks
 Player.prototype.reset = function() {
-    if (this.y === -45) {
+    if (this.y === -35) {
       this.x = 200;
       this.y = 380;
     }
@@ -85,24 +98,15 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(keyPressed) {
 
     if (keyPressed === "left" && this.x > -2) {
-        this.move(-101, 0);
+        this.move(-TILE_WIDTH, 0);
     } else if (keyPressed === "right" && this.x <= 301) {
-        this.move(101, 0);
+        this.move(TILE_WIDTH, 0);
     } else if (keyPressed === "down" && this.y < 380) {
-        this.move(0, 85);
+        this.move(0, TILE_HEIGHT);
     } else if (keyPressed === "up" && this.y >= 40) {
-        this.move(0, -85);
+        this.move(0, -TILE_HEIGHT);
     }
 
-};
-
-
-// Bounding Box Collision Detection src: https://www.youtube.com/watch?v=8b_reDI7iPM
-Enemy.prototype.checkCollision = function() { 
-    if ((player.x + player.width) >= (this.x) && (player.x) <= (this.x + this.width) &&
-        (player.y + player.height) >= (this.y) && (player.y) <= (this.y + this.height)) {
-        player.reset();
-    }
 };
 
 // Now instantiate your objects.

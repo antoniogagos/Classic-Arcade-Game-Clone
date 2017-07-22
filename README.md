@@ -1,4 +1,5 @@
 # Classic-Arcade-Game-Clone
+An HTML5 Canvas powered video game, developed using the best practices in Object Oriented JavaScript.
 
 The game is a Frogger-clone. The game's goal is to reach the top of the board while **avoiding the enemies** crossing along the road.
 
